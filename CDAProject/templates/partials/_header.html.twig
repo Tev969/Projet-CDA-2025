@@ -1,0 +1,38 @@
+<header class="bg-gradient-to-r from-purple-600 to-blue-600 shadow-lg">
+    <nav class="container mx-auto px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <svg class="h-8 w-8 mr-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
+                    <circle cx="12" cy="12" r="1"/>
+                    <path d="M12 9v6"/>
+                    <path d="M9 12h6"/>
+                </svg>
+                <a href="/" class="text-white text-2xl font-bold">GripUp</a>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="{{ path('app_home') }}" class="text-white hover:text-gray-200 transition duration-300">Accueil</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('admin') }}" class="text-white hover:text-gray-200 transition duration-300">Admin</a>
+                {% endif %}
+                
+                {% if app.user %}
+                    <span class="text-white">{{ app.user.firstname }}</span>
+                    <a href="{{ path('app_logout') }}" class="text-white hover:text-gray-200 transition duration-300">
+                        <span>Déconnexion</span>
+                    </a>
+                {% else %}
+                    <a href="{{ path('app_register') }}" class="text-white hover:text-gray-200 transition duration-300">S'inscrire</a>
+                    <a href="{{ path('app_login') }}" class="text-white hover:text-gray-200 transition duration-300">Se connecter</a>
+                {% endif %}
+            </div>
+            <div class="md:hidden">
+                <button class="text-white hover:text-gray-200">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+</header>

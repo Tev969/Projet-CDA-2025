@@ -42,22 +42,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $lastname = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable:true)]
     private ?float $size = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable:true)]
     private ?float $age = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable:true)]
     private ?string $sexe = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable:true)]
     private ?float $weight = null;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 20 , nullable:true)]
     private ?string $level = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable:true)]
     private ?float $week_activity = null;
 
     /**
