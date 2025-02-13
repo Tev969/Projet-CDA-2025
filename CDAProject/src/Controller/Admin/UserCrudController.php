@@ -6,6 +6,7 @@ use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
@@ -26,10 +27,10 @@ class UserCrudController extends AbstractCrudController
         yield ArrayField::new('roles');
         yield TextField::new('password') -> onlyOnForms();
         yield TextField::new('sexe');
-        yield TextField::new('size');
-        yield TextField::new('weight');
+        yield IntegerField::new('size');
+        yield IntegerField::new('weight');
         yield TextField::new('level');
-        yield TextField::new('week_activity');
+        yield IntegerField::new('week_activity');
     }
     
 }

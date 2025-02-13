@@ -18,17 +18,20 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-    public function findByCategory(Category $category): array
+    public function findByCategory(?Category $category = null): array
     {
-        return $this->createQueryBuilder('a')
+        $query = $this->createQueryBuilder('a')
             ->join('a.categories', 'c')
-            ->where('c = :category')
-            ->setParameter('category', $category)
             ->andWhere('a.state = :state')
             ->setParameter('state', StateEnum::PUBLISHED)
-            ->orderBy('a.createdAt', 'DESC')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('a.createdAt', 'DESC');
+
+            if ($category) {
+                $query->andWhere('c = :category')
+                    ->setParameter('category', $category);
+            }
+
+        return $query->getQuery()->getResult();
     }
 }
 

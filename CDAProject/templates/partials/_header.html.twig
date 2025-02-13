@@ -18,7 +18,7 @@
                 
                 {% if app.user %}
                     <a href="{{ path('app_article_new') }}" class="text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition duration-300">Créer un article</a>
-                    <span class="text-white">{{ app.user.firstname }}</span>
+                    <a href="{{ path('app_profil') }}" class="text-white">{{ app.user.firstname }}</a>
                     <a href="{{ path('app_logout') }}" class="text-white hover:text-gray-200 transition duration-300">
                         <span>Déconnexion</span>
                     </a>
@@ -26,9 +26,9 @@
                     <a href="{{ path('app_register') }}" class="text-white hover:text-gray-200 transition duration-300">S'inscrire</a>
                     <a href="{{ path('app_login') }}" class="text-white hover:text-gray-200 transition duration-300">Se connecter</a>
                 {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_programs') }}">Programmes</a>
-                </li>
+                 
+                    <a class="text-white hover:text-gray-200 transition duration-300" href="{{ path('app_programs') }}">Programmes</a>
+                
             </div>
             <div class="md:hidden">
                 <button class="text-white hover:text-gray-200">
