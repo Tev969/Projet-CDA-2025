@@ -63,7 +63,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Article>
      */
-    #[ORM\OneToMany(targetEntity: Article::class, mappedBy: '_user')]
+    #[ORM\OneToMany(targetEntity: Article::class, mappedBy: 'user')]
     private Collection $articles;
 
     /**
@@ -81,7 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Program>
      */
-    #[ORM\OneToMany(targetEntity: Program::class, mappedBy: '_user')]
+    #[ORM\OneToMany(targetEntity: Program::class, mappedBy: 'user')]
     private Collection $createPrograms;
 
     public function __construct()

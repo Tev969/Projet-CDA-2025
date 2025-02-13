@@ -26,9 +26,9 @@ class Article
 
 
     /**
-     * @var Collection<int, Categorie>
+     * @var Collection<int, Category>
      */
-    #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'articles')]
+    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'articles')]
     private Collection $categories;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
@@ -39,6 +39,8 @@ class Article
 
     #[ORM\Column(options:['default' => 'CURRENT_TIMESTAMP'])]
     private ?\DateTimeImmutable $createdAt = null;
+
+    private ?Category $category = null;
 
     public function __construct()
     {
@@ -89,14 +91,14 @@ class Article
 
 
     /**
-     * @return Collection<int, Categorie>
+     * @return Collection<int, Category>
      */
     public function getCategories(): Collection
     {
         return $this->categories;
     }
 
-    public function addCategory(Categorie $category): static
+    public function addCategory(Category $category): static
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
@@ -105,7 +107,7 @@ class Article
         return $this;
     }
 
-    public function removeCategory(Categorie $category): static
+    public function removeCategory(Category $category): static
     {
         $this->categories->removeElement($category);
 
@@ -145,6 +147,17 @@ class Article
     {
         $this->createdAt = $createdAt;
 
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
         return $this;
     }
 }

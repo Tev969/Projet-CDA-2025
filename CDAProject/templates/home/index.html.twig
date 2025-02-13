@@ -14,9 +14,9 @@
             <form method="get" action="{{ path('app_home') }}" class="form-inline">
                 <select name="category" class="form-control" onchange="this.form.submit()">
                     <option value="">Toutes les catégories</option>
-                    {% for categories in categories %}
-                        <option value="{{ categories.id }}" {% if selectedCategory == categories.id %}selected{% endif %}>
-                            {{ categories.name }}
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if selectedCategory == category.id %}selected{% endif %}>
+                            {{ category.title }}
                         </option>
                     {% endfor %}
                 </select>

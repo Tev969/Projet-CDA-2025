@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Program;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use App\Repository\CategoryRepository;
 
 class ProgramsFixtures extends Fixture
 {
@@ -266,6 +267,13 @@ class ProgramsFixtures extends Fixture
         ],
     ];
 
+    private CategoryRepository $categoryRepository;
+    
+    public function __construct(CategoryRepository $categoryRepository)
+    {
+        $this->categoryRepository = $categoryRepository;
+    }
+
     public function load(ObjectManager $manager): void
     {
         foreach (self::PROGRAMS as $programData) {
@@ -278,6 +286,9 @@ class ProgramsFixtures extends Fixture
                    ->setPrice($programData['price'])
                    ->setImage($programData['image'])
                    ->setIsCustom(false);
+
+            $category = $this->categoryRepository->find(1); // Assuming category ID 1 is used
+            $program->setCategory($category);
 
             $manager->persist($program);
         }
