@@ -3,15 +3,221 @@
 {% block title %}{{ program.title }}{% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <h1>{{ program.title }}</h1>
-                <img src="{{ program.image }}" class="img-fluid mb-4" alt="{{ program.title }}">
-                <p>{{ program.description }}</p>
-                <p class="text-muted">Créé le {{ program.createdAt|date('d/m/Y') }}</p>
-                <a href="{{ path('app_programs') }}" class="btn btn-secondary">Retour aux programmes</a>
+    <div class="min-h-screen bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            {# Card principale #}
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                {# En-tête avec image #}
+                <div class="relative h-[400px]">
+                    <img src="{{ asset( program.image) }}" 
+                         alt="{{ program.title }}" 
+                         class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <h1 class="text-4xl font-bold text-white mb-4">{{ program.title }}</h1>
+                        <div class="flex flex-wrap gap-4 items-center">
+                            <span class="px-4 py-2 bg-blue-600/90 text-white text-sm font-medium rounded-full backdrop-blur-sm">
+                                {{ program.difficulty }}
+                            </span>
+                            <span class="px-4 py-2 bg-green-500/90 text-white text-sm font-medium rounded-full backdrop-blur-sm">
+                                Gratuit
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {# Contenu principal #}
+                <div class="p-8">
+                    {# Informations clés #}
+                    <div class="flex flex-wrap gap-6 items-center mb-8 text-gray-600">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-clock text-blue-600"></i>
+                            <span>{{ program.duration }}h</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-calendar text-blue-600"></i>
+                            <span>Créé le {{ program.createdAt|date('d/m/Y') }}</span>
+                        </div>
+                    </div>
+
+                    {# Description #}
+                    <div class="prose max-w-none mb-12">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-3">
+                            <i class="fas fa-book-open text-blue-600"></i>
+                            À propos du programme
+                        </h2>
+
+                        {# Description en sections #}
+                        <div class="grid gap-8">
+                            {# Objectifs #}
+                            <div class="bg-blue-50 rounded-xl p-6">
+                                <h3 class="text-xl font-semibold text-blue-800 mb-4 flex items-center gap-2">
+                                    <i class="fas fa-bullseye text-blue-600"></i>
+                                    Objectifs du programme
+                                </h3>
+                                <p class="text-gray-700">{{ program.description }}</p>
+                            </div>
+
+
+                            {# Contenu détaillé #}
+                            <div class="bg-gray-50 rounded-xl p-6">
+                                <button onclick="toggleContent(this)" 
+                                        class="w-full text-left text-xl font-semibold text-gray-800 mb-6 flex items-center justify-between gap-2 hover:text-blue-600 transition-colors duration-200">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fas fa-list-ul text-blue-600"></i>
+                                        Contenu détaillé
+                                    </div>
+                                    <i class="fas fa-chevron-down text-blue-600 transform transition-transform duration-300"></i>
+                                </button>
+                                
+                                <div id="programContent" class="max-w-4xl mx-auto hidden">
+                                    {% for semaine, jours in program.steps %}
+                                        <div class="mb-12">
+                                            <div class="inline-block bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full px-6 py-2 mb-8">
+                                                <h3 class="text-xl font-bold text-white">{{ semaine }}</h3>
+                                            </div>
+                                            
+                                            {% for jour, activites in jours %}
+                                                <div class="bg-white rounded-2xl shadow-lg mb-8 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                                                    <button onclick="toggleDay(this)" 
+                                                            class="w-full text-left bg-gradient-to-r from-indigo-600 to-blue-600 px-6 py-4 rounded-t-2xl">
+                                                        <h4 class="text-xl font-semibold text-white flex items-center justify-between">
+                                                            <span class="flex items-center gap-2">
+                                                                <i class="fas fa-calendar-day"></i>
+                                                                {{ jour }}
+                                                            </span>
+                                                            <i class="fas fa-chevron-down transform transition-transform duration-300"></i>
+                                                        </h4>
+                                                    </button>
+                                                    
+                                                    <div class="p-6 hidden">
+                                                        {% for activite in activites %}
+                                                            <div class="{% if not loop.last %}border-b border-gray-100{% endif %} py-6 first:pt-2 last:pb-2">
+                                                                <div class="flex items-start gap-4">
+                                                                    <div class="flex-shrink-0">
+                                                                        <div class="bg-gradient-to-r from-blue-100 to-indigo-100 text-indigo-800 px-4 py-2 rounded-xl text-sm font-medium shadow-sm">
+                                                                            <i class="far fa-clock mr-2"></i>
+                                                                            {{ activite.durée }}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="flex-1 space-y-3">
+                                                                        <h5 class="text-lg font-medium text-gray-800 flex items-center gap-2">
+                                                                            <i class="fas fa-tasks text-indigo-600"></i>
+                                                                            {{ activite.activité }}
+                                                                        </h5>
+                                                                        
+                                                                        {% if activite.détails is defined %}
+                                                                            <ul class="mt-4 space-y-3 pl-4">
+                                                                                {% for detail in activite.détails %}
+                                                                                    <li class="flex items-center gap-3 text-gray-600 bg-gray-50 p-3 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                                                                                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center">
+                                                                                            <i class="fas fa-check text-sm text-indigo-600"></i>
+                                                                                        </div>
+                                                                                        <span class="text-gray-700">{{ detail }}</span>
+                                                                                    </li>
+                                                                                {% endfor %}
+                                                                            </ul>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            {# Points clés #}
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="bg-green-50 rounded-xl p-6">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <i class="fas fa-graduation-cap text-2xl text-green-600"></i>
+                                        <h4 class="text-lg font-semibold text-green-800">Niveau requis</h4>
+                                    </div>
+                                    <p class="text-green-700">{{ program.difficulty }}</p>
+                                </div>
+
+                                <div class="bg-purple-50 rounded-xl p-6">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <i class="fas fa-clock text-2xl text-purple-600"></i>
+                                        <h4 class="text-lg font-semibold text-purple-800">Durée totale</h4>
+                                    </div>
+                                    <p class="text-purple-700">{{ program.duration }} heures de formation</p>
+                                </div>
+
+            
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Actions #}
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-6 pt-6 border-t border-gray-100">
+                        <a href="{{ path('app_programs') }}" 
+                           class="group flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors duration-300">
+                            <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform duration-300"></i>
+                            <span>Retour aux programmes</span>
+                        </a>
+                        
+                        {% if app.user %}
+                            <button class="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 rounded-xl font-semibold transition duration-300 transform hover:scale-105 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                <span class="flex items-center justify-center gap-2">
+                                    <i class="fas fa-user-plus"></i>
+                                    S'inscrire au programme
+                                </span>
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    {# Ajoutez ce script à la fin de votre template, juste avant la fin du block body #}
+    {% block javascripts %}
+    {{ parent() }}
+    <script>
+        function toggleContent(button) {
+            const content = document.getElementById('programContent');
+            const icon = button.querySelector('.fa-chevron-down');
+            
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        function toggleDay(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('.fa-chevron-down');
+            
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+
+            // Animation smooth de la hauteur
+            if (!content.classList.contains('hidden')) {
+                content.style.maxHeight = content.scrollHeight + 'px';
+            } else {
+                content.style.maxHeight = '0px';
+            }
+        }
+
+        // Optional: Ajouter une animation CSS pour la transition de hauteur
+        document.addEventListener('DOMContentLoaded', function() {
+            const style = document.createElement('style');
+            style.textContent = `
+                .p-6 {
+                    max-height: 0;
+                    overflow: hidden;
+                    transition: max-height 0.3s ease-out;
+                }
+                .p-6:not(.hidden) {
+                    max-height: 2000px; /* Valeur arbitraire suffisamment grande */
+                    transition: max-height 0.5s ease-in;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+    {% endblock %}
 {% endblock %} 

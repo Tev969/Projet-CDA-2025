@@ -17,25 +17,31 @@ class Program
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
+    #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
     private ?string $difficulty = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $duration = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?float $price = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $is_custom = null;
 
     /**
-     * @var Collection<int, User>
+     * @var Collection<int, User>   
      */
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'registers')]
     private Collection $users;
@@ -49,10 +55,14 @@ class Program
     #[ORM\OneToMany(targetEntity: Exercice::class, mappedBy: 'program')]
     private Collection $exercices;
 
+    #[ORM\Column(nullable: true)]
+    private ?array $steps = null;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->exercices = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -60,15 +70,14 @@ class Program
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getTitle(): ?string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName(string $name): static
+    public function setTitle(string $title): static
     {
-        $this->name = $name;
-
+        $this->title = $title;
         return $this;
     }
 
@@ -80,7 +89,28 @@ class Program
     public function setDescription(string $description): static
     {
         $this->description = $description;
+        return $this;
+    }
 
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
         return $this;
     }
 
@@ -197,6 +227,18 @@ class Program
                 $exercice->setProgram(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSteps(): ?array
+    {
+        return $this->steps;
+    }
+
+    public function setSteps(?array $steps): static
+    {
+        $this->steps = $steps;
 
         return $this;
     }
