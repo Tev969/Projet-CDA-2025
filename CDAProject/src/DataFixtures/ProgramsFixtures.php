@@ -3,12 +3,15 @@
 namespace App\DataFixtures;
 
 use App\Entity\Program;
+use App\Entity\ProgramWeek;
+use App\Entity\Exercice;
 use App\Repository\CategoryRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class ProgramsFixtures extends Fixture
+class ProgramsFixtures extends Fixture implements DependentFixtureInterface
 {
     private const PROGRAMS = [
         [
@@ -100,23 +103,32 @@ class ProgramsFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        foreach (self::PROGRAMS as $programData) {
-            $program = new Program();
-            $program->setTitle($programData['title'])
-                   ->setDescription($programData['description'])
-                   ->setDifficulty($programData['difficulty'])
-                   ->setDuration($programData['duration'])
-                   ->setPrice($programData['price'])
-                   ->setImage($programData['image'])
-                   ->setIsCustom(false)
-                   ->setSlug($this->slugger->slug($programData['title']));
-
-            $category = $this->categoryRepository->find(1);
-            $program->setCategory($category);
-
-            $manager->persist($program);
+        $program = new Program();
+        $program->setName('Programme Débutant Complet');
+        $program->setDescription('Un programme de 12 semaines pour débutants');
+        
+        // Création des semaines
+        for ($i = 1; $i <= 12; $i++) {
+            $week = new ProgramWeek();
+            $week->setWeekNumber($i);
+            $week->setTitle('Semaine ' . $i);
+            $week->setDescription('Objectifs de la semaine ' . $i);
+            $week->setProgram($program);
+            
+            // Ajout d'exercices spécifiques pour chaque semaine
+            // ... existing code ...
+            
+            $manager->persist($week);
         }
-
+        
+        $manager->persist($program);
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [
+            ExercicesFixtures::class,
+        ];
     }
 }

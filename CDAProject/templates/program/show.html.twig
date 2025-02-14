@@ -5,11 +5,11 @@
 {% block body %}
     <div class="min-h-screen bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            {# Card principale #}
+            {# En-tête du programme #}
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-                {# En-tête avec image #}
+                {# Image de couverture avec overlay #}
                 <div class="relative h-[400px]">
-                    <img src="{{ asset( program.image) }}" 
+                    <img src="{{ asset(program.image) }}" 
                          alt="{{ program.title }}" 
                          class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -28,7 +28,7 @@
 
                 {# Contenu principal #}
                 <div class="p-8">
-                    {# Informations clés #}
+                    {# Méta-informations #}
                     <div class="flex flex-wrap gap-6 items-center mb-8 text-gray-600">
                         <div class="flex items-center gap-2">
                             <i class="fas fa-clock text-blue-600"></i>
@@ -40,215 +40,114 @@
                         </div>
                     </div>
 
-                    {# Description #}
-                    <div class="prose max-w-none mb-12">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-3">
-                            <i class="fas fa-book-open text-blue-600"></i>
-                            À propos du programme
-                        </h2>
+                    {# Description et détails #}
+                    <div class="space-y-8">
+                        {# Objectifs #}
+                        <div class="bg-blue-50 rounded-xl p-6">
+                            <h3 class="text-xl font-semibold text-blue-800 mb-4 flex items-center gap-2">
+                                <i class="fas fa-bullseye text-blue-600"></i>
+                                Objectifs du programme
+                            </h3>
+                            <p class="text-gray-700">{{ program.description }}</p>
+                        </div>
 
-                        {# Description en sections #}
-                        <div class="grid gap-8">
-                            {# Objectifs #}
-                            <div class="bg-blue-50 rounded-xl p-6">
-                                <h3 class="text-xl font-semibold text-blue-800 mb-4 flex items-center gap-2">
-                                    <i class="fas fa-bullseye text-blue-600"></i>
-                                    Objectifs du programme
-                                </h3>
-                                <p class="text-gray-700">{{ program.description }}</p>
-                            </div>
+                        {# Statistiques #}
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {% include 'program/_stat_card.html.twig' with {
+                                bg_color: 'green',
+                                icon: 'graduation-cap',
+                                title: 'Niveau requis',
+                                value: program.difficulty
+                            } %}
 
-                            {# Points clés #}
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div class="bg-green-50 rounded-xl p-6">
-                                    <div class="flex items-center gap-3 mb-3">
-                                        <i class="fas fa-graduation-cap text-2xl text-green-600"></i>
-                                        <h4 class="text-lg font-semibold text-green-800">Niveau requis</h4>
-                                    </div>
-                                    <p class="text-green-700">{{ program.difficulty }}</p>
+                            {% include 'program/_stat_card.html.twig' with {
+                                bg_color: 'purple',
+                                icon: 'clock',
+                                title: 'Durée totale',
+                                value: program.duration ~ ' heures de formation'
+                            } %}
+
+                            {% include 'program/_stat_card.html.twig' with {
+                                bg_color: 'orange',
+                                icon: 'dumbbell',
+                                title: 'Exercices',
+                                value: program.exercices|length ~ ' exercices pratiques'
+                            } %}
+                        </div>
+
+                        {# Programme d'entraînement #}
+                        <div class="bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl p-8 bg-[length:400%_400%] animate-gradient">
+                            <h3 class="text-2xl font-bold text-orange-800 mb-6 flex items-center gap-3">
+                                <div class="bg-orange-100 p-3 rounded-lg">
+                                    <i class="fas fa-dumbbell text-orange-600"></i>
                                 </div>
-
-                                <div class="bg-purple-50 rounded-xl p-6">
-                                    <div class="flex items-center gap-3 mb-3">
-                                        <i class="fas fa-clock text-2xl text-purple-600"></i>
-                                        <h4 class="text-lg font-semibold text-purple-800">Durée totale</h4>
-                                    </div>
-                                    <p class="text-purple-700">{{ program.duration }} heures de formation</p>
-                                </div>
-
-                                {# Ajout de la section Exercices #}
-                                <div class="bg-orange-50 rounded-xl p-6">
-                                    <div class="flex items-center gap-3 mb-3">
-                                        <i class="fas fa-dumbbell text-2xl text-orange-600"></i>
-                                        <h4 class="text-lg font-semibold text-orange-800">Exercices</h4>
-                                    </div>
-                                    <p class="text-orange-700">{{ program.exercices|length }} exercices pratiques</p>
-                                </div>
-                            </div>
-
-                            {# Nouvelle section pour la liste des exercices #}
-                            <div class="bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl p-8 mt-8">
-                                <h3 class="text-2xl font-bold text-orange-800 mb-6 flex items-center gap-3">
-                                    <div class="bg-orange-100 p-3 rounded-lg">
-                                        <i class="fas fa-dumbbell text-orange-600"></i>
-                                    </div>
-                                    Programme d'entraînement
-                                </h3>
-                                
-                                <div class="space-y-6">
-                                    {% for week in weeks %}
-                                        <div class="bg-white rounded-xl shadow-sm overflow-hidden transform transition-all duration-200 hover:shadow-md">
-                                            <button onclick="toggleWeek(this)" 
-                                                    class="w-full px-8 py-5 flex justify-between items-center hover:bg-gray-50 transition-colors duration-200">
-                                                <div class="flex items-center gap-4">
-                                                    <div class="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center">
-                                                        <span class="text-blue-600 font-bold">S{{ loop.index }}</span>
+                                Programme d'entraînement
+                            </h3>
+                            
+                            <div class="space-y-6">
+                                {% for week in program.programWeeks %}
+                                    <div class="week-card">
+                                        <h3>{{ week.title }}</h3>
+                                        <p>{{ week.description }}</p>
+                                        
+                                        <div class="exercices-list">
+                                            {% for exercice in week.exercices %}
+                                                <div class="exercice-card">
+                                                    <h4>{{ exercice.name }}</h4>
+                                                    <p>Difficulté : {{ exercice.difficulty }}</p>
+                                                    <p>Durée : {{ exercice.durationInMinutes }} minutes</p>
+                                                    <p>Équipement : {{ exercice.equipment }}</p>
+                                                    <div class="instructions">
+                                                        {{ exercice.instructions|nl2br }}
                                                     </div>
-                                                    <h4 class="text-xl font-bold text-gray-800">
-                                                        {{ week.value }}
-                                                    </h4>
                                                 </div>
-                                                <i class="fas fa-chevron-down text-gray-400 transform transition-transform duration-300"></i>
-                                            </button>
-                                            
-                                            <div class="week-content hidden">
-                                                {% for session in 1..3 %}
-                                                    <div class="border-t border-gray-100">
-                                                        <button onclick="toggleSession(this)" 
-                                                                class="w-full px-8 py-4 flex justify-between items-center bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
-                                                            <div class="flex items-center gap-3">
-                                                                <div class="bg-purple-100 w-10 h-10 rounded-lg flex items-center justify-center">
-                                                                    <span class="text-purple-600 font-semibold">{{ session }}</span>
-                                                                </div>
-                                                                <h5 class="text-lg font-semibold text-gray-700">
-                                                                    Session {{ session }}
-                                                                </h5>
-                                                            </div>
-                                                            <i class="fas fa-chevron-down text-gray-400 transform transition-transform duration-300"></i>
-                                                        </button>
-                                                        
-                                                        <div class="session-content hidden">
-                                                            <div class="grid grid-cols-1 gap-6 p-6 bg-gray-50">
-                                                                {% for exercice in exercices %}
-                                                                    {% if exercice.week == week and exercice.session == 'Session ' ~ session %}
-                                                                        <div class="bg-white rounded-xl p-6 border-l-4 border-orange-500 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1">
-                                                                            <div class="flex items-start justify-between">
-                                                                                <h6 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-3">
-                                                                                    <div class="bg-orange-100 p-2 rounded-lg">
-                                                                                        <i class="fas fa-running text-orange-500"></i>
-                                                                                    </div>
-                                                                                    {{ exercice.name }}
-                                                                                </h6>
-                                                                                <div class="bg-orange-100 px-4 py-2 rounded-full flex items-center gap-2">
-                                                                                    <i class="fas fa-clock text-orange-600"></i>
-                                                                                    <span class="text-sm font-semibold text-orange-600">{{ exercice.duration }} min</span>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="ml-12 space-y-3">
-                                                                                <div class="text-gray-600 whitespace-pre-line leading-relaxed">
-                                                                                    {{ exercice.description }}
-                                                                                </div>
-                                                                                <div class="flex flex-wrap gap-2">
-                                                                                    <span class="px-3 py-1 bg-blue-50 text-blue-600 text-sm font-medium rounded-full">
-                                                                                        Intensité moyenne
-                                                                                    </span>
-                                                                                    <span class="px-3 py-1 bg-green-50 text-green-600 text-sm font-medium rounded-full">
-                                                                                        Débutant friendly
-                                                                                    </span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    {% endif %}
-                                                                {% endfor %}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                {% endfor %}
-                                            </div>
+                                            {% endfor %}
                                         </div>
-                                    {% endfor %}
-                                </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
 
                     {# Actions #}
-                    <div class="flex flex-col sm:flex-row justify-between items-center gap-6 pt-6 border-t border-gray-100">
-                        <a href="{{ path('app_programs') }}" 
-                           class="group flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors duration-300">
-                            <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform duration-300"></i>
-                            <span>Retour aux programmes</span>
-                        </a>
-                        
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-6 pt-8 border-t border-gray-100 mt-8">
+                        {% include 'program/_back_button.html.twig' %}
                         {% if app.user %}
-                            <button class="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 rounded-xl font-semibold transition duration-300 transform hover:scale-105 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                                <span class="flex items-center justify-center gap-2">
-                                    <i class="fas fa-user-plus"></i>
-                                    S'inscrire au programme
-                                </span>
-                            </button>
+                            {% include 'program/_enroll_button.html.twig' %}
                         {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
 
-    {# Ajoutez ce script à la fin de votre template, juste avant la fin du block body #}
-    {% block javascripts %}
+{% block javascripts %}
     {{ parent() }}
     <script>
-        function toggleWeek(button) {
+        const toggleAnimation = (element, icon) => {
+            element.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        };
+
+        window.toggleWeek = (button) => {
             const content = button.nextElementSibling;
             const icon = button.querySelector('.fa-chevron-down');
             
-            content.classList.toggle('hidden');
-            icon.classList.toggle('rotate-180');
+            toggleAnimation(content, icon);
             
-            // Fermer toutes les sessions quand on ferme la semaine
             if (content.classList.contains('hidden')) {
-                const sessionContents = content.querySelectorAll('.session-content');
-                const sessionIcons = content.querySelectorAll('.session-content ~ button .fa-chevron-down');
-                sessionContents.forEach(sc => sc.classList.add('hidden'));
-                sessionIcons.forEach(si => si.classList.remove('rotate-180'));
+                content.querySelectorAll('.session-content').forEach(sc => sc.classList.add('hidden'));
+                content.querySelectorAll('.fa-chevron-down').forEach(si => si.classList.remove('rotate-180'));
             }
-        }
+        };
 
-        function toggleSession(button) {
+        window.toggleSession = (button) => {
             const content = button.nextElementSibling;
             const icon = button.querySelector('.fa-chevron-down');
             
-            content.classList.toggle('hidden');
-            icon.classList.toggle('rotate-180');
-        }
-
-        // Ajouter les styles pour les animations
-        document.addEventListener('DOMContentLoaded', function() {
-            const style = document.createElement('style');
-            style.textContent = `
-                .week-content, .session-content {
-                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                }
-                
-                .fa-chevron-down {
-                    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                }
-                
-                .rotate-180 {
-                    transform: rotate(180deg);
-                }
-
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: translateY(-10px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-
-                .session-content:not(.hidden) {
-                    animation: fadeIn 0.4s ease-out;
-                }
-            `;
-            document.head.appendChild(style);
-        });
+            toggleAnimation(content, icon);
+            content.classList.toggle('animate-fadeIn');
+        };
     </script>
-    {% endblock %}
 {% endblock %} 

@@ -63,10 +63,14 @@ class Program implements \Stringable
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    #[ORM\OneToMany(mappedBy: 'program', targetEntity: ProgramWeek::class, orphanRemoval: true)]
+    private Collection $programWeeks;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->exercices = new ArrayCollection();
+        $this->programWeeks = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
     }
 

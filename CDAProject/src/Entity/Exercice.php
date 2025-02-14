@@ -42,6 +42,21 @@ class Exercice
     #[ORM\Column(enumType: WeekEnum::class)]
     private ?WeekEnum $week = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $difficulty = null;
+
+    #[ORM\Column]
+    private ?int $durationInMinutes = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $equipment = null;
+
+    #[ORM\Column(type: 'text')]
+    private ?string $instructions = null;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    private array $variations = [];
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -148,6 +163,66 @@ class Exercice
     public function setWeek(WeekEnum $week): static
     {
         $this->week = $week;
+
+        return $this;
+    }
+
+    public function getDifficulty(): ?string
+    {
+        return $this->difficulty;
+    }
+
+    public function setDifficulty(string $difficulty): static
+    {
+        $this->difficulty = $difficulty;
+
+        return $this;
+    }
+
+    public function getDurationInMinutes(): ?int
+    {
+        return $this->durationInMinutes;
+    }
+
+    public function setDurationInMinutes(int $durationInMinutes): static
+    {
+        $this->durationInMinutes = $durationInMinutes;
+
+        return $this;
+    }
+
+    public function getEquipment(): ?string
+    {
+        return $this->equipment;
+    }
+
+    public function setEquipment(?string $equipment): static
+    {
+        $this->equipment = $equipment;
+
+        return $this;
+    }
+
+    public function getInstructions(): ?string
+    {
+        return $this->instructions;
+    }
+
+    public function setInstructions(string $instructions): static
+    {
+        $this->instructions = $instructions;
+
+        return $this;
+    }
+
+    public function getVariations(): ?array
+    {
+        return $this->variations;
+    }
+
+    public function setVariations(?array $variations): static
+    {
+        $this->variations = $variations;
 
         return $this;
     }
