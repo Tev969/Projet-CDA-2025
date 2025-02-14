@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\ExerciceRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Enum\WeekEnum;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ExerciceRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: ExerciceRepository::class)]
 class Exercice
@@ -22,8 +23,6 @@ class Exercice
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $type = null;
 
     #[ORM\Column]
     private ?float $duration = null;
@@ -36,6 +35,12 @@ class Exercice
 
     #[ORM\ManyToOne(inversedBy: 'exercices')]
     private ?Program $program = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $session = null;
+
+    #[ORM\Column(enumType: WeekEnum::class)]
+    private ?WeekEnum $week = null;
 
     public function __construct()
     {
@@ -71,17 +76,6 @@ class Exercice
         return $this;
     }
 
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): static
-    {
-        $this->type = $type;
-
-        return $this;
-    }
 
     public function getDuration(): ?float
     {
@@ -130,6 +124,30 @@ class Exercice
     public function setProgram(?Program $program): static
     {
         $this->program = $program;
+
+        return $this;
+    }
+
+    public function getSession(): ?string
+    {
+        return $this->session;
+    }
+
+    public function setSession(string $session): static
+    {
+        $this->session = $session;
+
+        return $this;
+    }
+
+    public function getWeek(): ?WeekEnum
+    {
+        return $this->week;
+    }
+
+    public function setWeek(WeekEnum $week): static
+    {
+        $this->week = $week;
 
         return $this;
     }

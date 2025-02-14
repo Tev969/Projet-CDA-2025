@@ -7,6 +7,7 @@ use App\Repository\ProgramRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Enum\WeekEnum;
 
 class ProgramController extends AbstractController
 {
@@ -23,6 +24,8 @@ class ProgramController extends AbstractController
     {
         return $this->render('program/show.html.twig', [
             'program' => $program,
+            'exercices' => $program->getExercices(),
+            'weeks' => WeekEnum::cases(),
         ]);
     }
 } 
