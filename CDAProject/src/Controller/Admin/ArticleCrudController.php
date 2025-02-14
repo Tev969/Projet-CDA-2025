@@ -23,7 +23,7 @@ class ArticleCrudController extends AbstractCrudController
        yield TextEditorField::new('description');
        yield TextField::new('state');
        yield AssociationField::new('categories');
-       yield TextField::new('author');
+       yield TextField::new('slug');
        yield TextField::new('picture');
        
     }

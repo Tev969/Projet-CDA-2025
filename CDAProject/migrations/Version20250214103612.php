@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250212135803 extends AbstractMigration
+final class Version20250214103612 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,17 +20,19 @@ final class Version20250212135803 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE article (id SERIAL NOT NULL, user_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, state VARCHAR(100) DEFAULT NULL, author VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE article (id SERIAL NOT NULL, user_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, state VARCHAR(100) DEFAULT NULL, picture VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, slug VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_23A0E66A76ED395 ON article (user_id)');
-        $this->addSql('CREATE TABLE article_categorie (article_id INT NOT NULL, categorie_id INT NOT NULL, PRIMARY KEY(article_id, categorie_id))');
-        $this->addSql('CREATE INDEX IDX_934886107294869C ON article_categorie (article_id)');
-        $this->addSql('CREATE INDEX IDX_93488610BCF5E72D ON article_categorie (categorie_id)');
-        $this->addSql('CREATE TABLE categorie (id SERIAL NOT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE exercice (id SERIAL NOT NULL, program_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, description TEXT NOT NULL, type VARCHAR(255) NOT NULL, duration DOUBLE PRECISION NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('COMMENT ON COLUMN article.created_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('CREATE TABLE article_category (article_id INT NOT NULL, category_id INT NOT NULL, PRIMARY KEY(article_id, category_id))');
+        $this->addSql('CREATE INDEX IDX_53A4EDAA7294869C ON article_category (article_id)');
+        $this->addSql('CREATE INDEX IDX_53A4EDAA12469DE2 ON article_category (category_id)');
+        $this->addSql('CREATE TABLE category (id SERIAL NOT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE exercice (id SERIAL NOT NULL, program_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, description TEXT NOT NULL, duration DOUBLE PRECISION NOT NULL, session VARCHAR(255) NOT NULL, week VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_E418C74D3EB8070A ON exercice (program_id)');
-        $this->addSql('CREATE TABLE program (id SERIAL NOT NULL, user_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, description TEXT NOT NULL, difficulty VARCHAR(50) NOT NULL, duration DOUBLE PRECISION NOT NULL, price DOUBLE PRECISION NOT NULL, is_custom BOOLEAN NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE program (id SERIAL NOT NULL, user_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, description TEXT NOT NULL, image VARCHAR(255) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, difficulty VARCHAR(50) DEFAULT NULL, duration DOUBLE PRECISION DEFAULT NULL, price DOUBLE PRECISION DEFAULT NULL, is_custom BOOLEAN DEFAULT NULL, steps JSON DEFAULT NULL, slug VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_92ED7784A76ED395 ON program (user_id)');
-        $this->addSql('CREATE TABLE "user" (id SERIAL NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, size DOUBLE PRECISION NOT NULL, age DOUBLE PRECISION NOT NULL, sexe VARCHAR(255) NOT NULL, weight DOUBLE PRECISION NOT NULL, level VARCHAR(20) NOT NULL, week_activity DOUBLE PRECISION NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('COMMENT ON COLUMN program.created_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('CREATE TABLE "user" (id SERIAL NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, lastname VARCHAR(100) NOT NULL, firstname VARCHAR(100) NOT NULL, size DOUBLE PRECISION DEFAULT NULL, age DOUBLE PRECISION DEFAULT NULL, sexe VARCHAR(255) DEFAULT NULL, weight DOUBLE PRECISION DEFAULT NULL, level VARCHAR(20) DEFAULT NULL, week_activity DOUBLE PRECISION DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL ON "user" (email)');
         $this->addSql('CREATE TABLE user_exercice (user_id INT NOT NULL, exercice_id INT NOT NULL, PRIMARY KEY(user_id, exercice_id))');
         $this->addSql('CREATE INDEX IDX_495234DA76ED395 ON user_exercice (user_id)');
@@ -54,8 +56,8 @@ final class Version20250212135803 extends AbstractMigration
         $this->addSql('DROP TRIGGER IF EXISTS notify_trigger ON messenger_messages;');
         $this->addSql('CREATE TRIGGER notify_trigger AFTER INSERT OR UPDATE ON messenger_messages FOR EACH ROW EXECUTE PROCEDURE notify_messenger_messages();');
         $this->addSql('ALTER TABLE article ADD CONSTRAINT FK_23A0E66A76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE article_categorie ADD CONSTRAINT FK_934886107294869C FOREIGN KEY (article_id) REFERENCES article (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE article_categorie ADD CONSTRAINT FK_93488610BCF5E72D FOREIGN KEY (categorie_id) REFERENCES categorie (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE article_category ADD CONSTRAINT FK_53A4EDAA7294869C FOREIGN KEY (article_id) REFERENCES article (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE article_category ADD CONSTRAINT FK_53A4EDAA12469DE2 FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE exercice ADD CONSTRAINT FK_E418C74D3EB8070A FOREIGN KEY (program_id) REFERENCES program (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE program ADD CONSTRAINT FK_92ED7784A76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE user_exercice ADD CONSTRAINT FK_495234DA76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -69,8 +71,8 @@ final class Version20250212135803 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE article DROP CONSTRAINT FK_23A0E66A76ED395');
-        $this->addSql('ALTER TABLE article_categorie DROP CONSTRAINT FK_934886107294869C');
-        $this->addSql('ALTER TABLE article_categorie DROP CONSTRAINT FK_93488610BCF5E72D');
+        $this->addSql('ALTER TABLE article_category DROP CONSTRAINT FK_53A4EDAA7294869C');
+        $this->addSql('ALTER TABLE article_category DROP CONSTRAINT FK_53A4EDAA12469DE2');
         $this->addSql('ALTER TABLE exercice DROP CONSTRAINT FK_E418C74D3EB8070A');
         $this->addSql('ALTER TABLE program DROP CONSTRAINT FK_92ED7784A76ED395');
         $this->addSql('ALTER TABLE user_exercice DROP CONSTRAINT FK_495234DA76ED395');
@@ -78,8 +80,8 @@ final class Version20250212135803 extends AbstractMigration
         $this->addSql('ALTER TABLE user_program DROP CONSTRAINT FK_CAE0698EA76ED395');
         $this->addSql('ALTER TABLE user_program DROP CONSTRAINT FK_CAE0698E3EB8070A');
         $this->addSql('DROP TABLE article');
-        $this->addSql('DROP TABLE article_categorie');
-        $this->addSql('DROP TABLE categorie');
+        $this->addSql('DROP TABLE article_category');
+        $this->addSql('DROP TABLE category');
         $this->addSql('DROP TABLE exercice');
         $this->addSql('DROP TABLE program');
         $this->addSql('DROP TABLE "user"');

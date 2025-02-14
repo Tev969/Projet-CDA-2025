@@ -41,6 +41,10 @@
                 <p class="mt-1 text-sm text-gray-500">PNG, JPG ou GIF (max. 1Mo)</p>
             </div>
 
+            <div class="hidden">
+                {{ form_widget(form.slug) }}
+            </div>
+
             <div class="flex items-center justify-between">
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                     Créer l'article
@@ -49,4 +53,19 @@
             </div>
         {{ form_end(form) }}
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const titleInput = document.querySelector('#article_title');
+            const slugInput = document.querySelector('#article_slug');
+            
+            titleInput.addEventListener('input', function(e) {
+                const slug = e.target.value
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/(^-|-$)/g, '');
+                slugInput.value = slug;
+            });
+        });
+    </script>
 {% endblock %}
