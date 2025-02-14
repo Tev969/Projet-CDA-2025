@@ -10,9 +10,15 @@
             {% for program in programs %}
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-500 hover:-translate-y-2">
                     <div class="relative">
-                        <img src="{{ asset(program.image) }}" 
-                             alt="{{ program.title }}" 
-                             class="w-full h-64 object-cover transition duration-300 hover:scale-105">
+                        {% if program.image %}
+                            <img src="{{ asset(program.image) }}" 
+                                 alt="{{ program.title }}" 
+                                 class="w-full h-64 object-cover transition duration-300 hover:scale-105">
+                        {% else %}
+                            <img src="{{ asset('images/default-program.svg') }}" 
+                                 alt="{{ program.title }}" 
+                                 class="w-full h-64 object-contain transition duration-300 hover:scale-105">
+                        {% endif %}
                         <div class="absolute top-4 right-4">
                             <span class="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-full">
                                 {{ program.difficulty }}

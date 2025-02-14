@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\EntityListener;
+namespace App\EntityListener;
 
 use App\Entity\Article;
 use Doctrine\ORM\Events;

@@ -64,7 +64,8 @@
                                         <span class="text-sm text-gray-500">Partagez votre expérience</span>
                                     </div>
                                 </a>
-                                <a href="{{ path('app_programs') }}" class="flex items-center space-x-2 px-4 py-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-300 font-medium group">
+                                {% if is_granted('ROLE_COACH') %}
+                                <a href="{{ path('app_program_create') }}" class="flex items-center space-x-2 px-4 py-3 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-300 font-medium group">
                                     <svg class="w-5 h-5 transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
                                     </svg>
@@ -73,6 +74,7 @@
                                         <span class="text-sm text-gray-500">Créez votre entraînement</span>
                                     </div>
                                 </a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -92,18 +94,19 @@
                                     </svg>
                                     <span>Mon Profil</span>
                                 </a>
-                                <a href="{{ path('app_article_new') }}" class="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-300 font-medium group">
+
+                                {% if not is_granted('ROLE_COACH') %}
+                                <a href="{{path('app_coach') }}" class="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-300 font-medium group">
                                     <svg class="w-5 h-5 transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2.5 2.5 0 00-2.5-2.5H14"/>
                                     </svg>
-                                    <span>Créer un article</span>
+                                    <div class="flex flex-col">
+                                        <span>Devenir coach</span>
+                                        <span class="text-xs text-gray-500">Partagez votre expertise</span>
+                                    </div>
                                 </a>
-                                <a href="{{ path('app_programs') }}" class="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-300 font-medium group">
-                                    <svg class="w-5 h-5 transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
-                                    </svg>
-                                    <span>Créer un programme</span>
-                                </a>
+                                {% endif %}
+
                                 <div class="my-1 border-t border-gray-100"></div>
                                 <a href="{{ path('app_logout') }}" class="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-all duration-300 font-medium group">
                                     <svg class="w-5 h-5 transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -158,7 +161,16 @@
                                 <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-400 to-pink-500 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></span>
                                 <span class="relative z-10">Créer un article</span>
                             </a>
+                            {% if is_granted('ROLE_COACH') %}
+                            <a href="{{ path('app_program_create') }}" class="relative overflow-hidden text-white text-xl bg-purple-500 hover:bg-purple-400 px-8 py-3 rounded-xl transition-all duration-300 font-medium group">
+                                <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-400 to-pink-500 opacity-0 group-hover:opacity-50 transition-opacity duration-300"></span>
+                                <span class="relative z-10">Créer un programme</span>
+                            </a>
+                            {% endif %}
                             <a href="{{ path('app_profil') }}" class="text-white text-xl hover:text-gray-200 transition-all duration-300 font-medium hover:scale-110 transform">Mon Profil</a>
+                            {% if not is_granted('ROLE_COACH') %}
+                            <a href="{{ path('app_coach') }}" class="text-white text-xl hover:text-gray-200 transition-all duration-300 font-medium hover:scale-110 transform">Devenir coach</a>
+                            {% endif %}
                             <a href="{{ path('app_logout') }}" class="text-white text-xl hover:text-gray-200 transition-all duration-300 font-medium hover:scale-110 transform">Déconnexion</a>
                         {% else %}
                             <div class="flex flex-col space-y-4">

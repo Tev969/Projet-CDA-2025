@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+    <!-- Fond avec dégradé -->
+    <defs>
+        <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#4F46E5;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    <rect width="800" height="600" fill="url(#bg-gradient)"/>
+    
+    <!-- Montagne stylisée -->
+    <path d="M200,500 L400,200 L600,500 Z" fill="#ffffff" opacity="0.2"/>
+    
+    <!-- Grimpeur stylisé -->
+    <circle cx="400" cy="350" r="40" fill="#ffffff"/>
+    <line x1="400" y1="390" x2="400" y2="450" stroke="#ffffff" stroke-width="8"/>
+    <line x1="400" y1="410" x2="360" y2="440" stroke="#ffffff" stroke-width="8"/>
+    <line x1="400" y1="410" x2="440" y2="440" stroke="#ffffff" stroke-width="8"/>
+    
+    <!-- Texte -->
+    <text x="400" y="520" font-family="Arial, sans-serif" font-size="24" fill="#ffffff" text-anchor="middle">
+        Programme d'Escalade
+    </text>
+</svg> 
