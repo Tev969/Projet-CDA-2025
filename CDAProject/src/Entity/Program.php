@@ -55,9 +55,6 @@ class Program implements \Stringable
     #[ORM\OneToMany(targetEntity: Exercice::class, mappedBy: 'program')]
     private Collection $exercices;
 
-    #[ORM\Column(nullable: true)]
-    private ?array $steps = null;
-
     private ?Category $category = null;
 
     #[ORM\Column(length: 255)]
@@ -241,17 +238,6 @@ class Program implements \Stringable
         return $this;
     }
 
-    public function getSteps(): ?array
-    {
-        return $this->steps;
-    }
-
-    public function setSteps(?array $steps): static
-    {
-        $this->steps = $steps;
-
-        return $this;
-    }
 
     public function getCategory(): ?Category
     {

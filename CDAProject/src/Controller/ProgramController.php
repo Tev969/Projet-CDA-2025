@@ -25,8 +25,17 @@ class ProgramController extends AbstractController
     {
         $program->addUser($this->getUser());
         $entityManager->flush();
-        $this->addFlash('success', 'Programme sauvegardé avec succès');
+        $this->addFlash('success', 'Program saved successfully');
         return $this->redirectToRoute('app_program_show', ['id' => $program->getId()]);
+    }
+
+    #[Route('/program/unsave/{id}', name: 'app_program_unsave')]
+    public function unsave(Program $program, EntityManagerInterface $entityManager): Response
+    {
+        $program->removeUser($this->getUser());
+        $entityManager->flush();
+        $this->addFlash('success', 'Programme retiré de vos favoris');
+        return $this->redirectToRoute('app_profil');
     }
 
     #[Route('/program/{id}', name: 'app_program_show')]
@@ -36,20 +45,6 @@ class ProgramController extends AbstractController
             'program' => $program,
             'exercices' => $program->getExercices(),
             'weeks' => WeekEnum::cases(),
-        ]);
-    }
-
-    #[Route('/my-programs', name: 'app_my_programs')]
-    public function myPrograms(ProgramRepository $programRepository): Response
-    {
-        $user = $this->getUser();
-        if (!$user) {
-            $this->addFlash('error', 'Vous devez être connecté pour accéder à vos programmes');
-            return $this->redirectToRoute('app_login');
-        }
-
-        return $this->render('program/my_programs.html.twig', [
-            'programs' => $user->getPrograms(),
         ]);
     }
 } 
