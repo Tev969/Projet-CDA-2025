@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Enum\StateEnum;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -166,8 +167,9 @@ class ArticlesFixtures extends Fixture implements DependentFixtureInterface
                 ->setDescription($description)
                 ->setCreatedAt(new \DateTimeImmutable())
                 ->setPicture($picture)
+                ->setState(StateEnum::PUBLISHED)
                 ->setSlug($this->slugger->slug($title));
-                
+
         
         $manager->persist($article);
     }

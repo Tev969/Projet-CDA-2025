@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ArticleRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Enum\StateEnum;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
@@ -21,8 +22,8 @@ class Article
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $state = null;
+    #[ORM\Column(enumType: StateEnum::class)]
+    private ?StateEnum $state = null;
 
 
     /**
@@ -80,6 +81,17 @@ class Article
         return $this;
     }
 
+    public function getState(): ?StateEnum
+    {
+        return $this->state;
+    }
+
+    public function setState(StateEnum $state): static
+    {
+        $this->state = $state;
+
+        return $this;
+    }
 
 
     /**

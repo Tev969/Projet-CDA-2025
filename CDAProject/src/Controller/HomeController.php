@@ -19,10 +19,16 @@ final class HomeController extends AbstractController
         ArticleRepository $articleRepository,
         CategoryRepository $categoryRepository
     ): Response {
-        $categoryId = $request->query->getInt('category');
+        $categoryId =  (int) $request->query->get('category', 0);
+        
+        if ($categoryId === 0) {
+            $articles = $articleRepository->findAll();
+        } else {
+            $articles = $articleRepository->findByCategory($categoryRepository->find($categoryId));
+        }
 
         return $this->render('home/index.html.twig', [
-            'articles' => $articleRepository->findByCategory($categoryRepository->find($categoryId)),
+            'articles' => $articles,
             'categories' => $categoryRepository->findAll(),
             'selectedCategory' => $categoryId,
         ]);
