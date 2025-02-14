@@ -23,7 +23,7 @@ class Article
     private ?string $description = null;
 
     #[ORM\Column(enumType: StateEnum::class)]
-    private ?StateEnum $state = null;
+    private ?StateEnum $state = StateEnum::DRAFT;
 
 
     /**

@@ -11,6 +11,14 @@
     </head>
     <body>
         {% include 'partials/_header.html.twig' %}
+              {% for message in app.flashes('success') %}
+                <div class="mb-6 bg-emerald-50 border-l-4 border-emerald-400 p-4 rounded-r-lg shadow-sm relative animate-fade-in-down" role="alert">
+                    <p class="text-emerald-700 font-medium">{{ message }}</p>
+                    <button type="button" class="absolute top-0 right-0 mt-4 mr-4 text-emerald-400 hover:text-emerald-600 transition-colors" data-bs-dismiss="alert">
+                        <span class="text-xl">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
         {% block body %}{% endblock %}
     </body>
 </html>

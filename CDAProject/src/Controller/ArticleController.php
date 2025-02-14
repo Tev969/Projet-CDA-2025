@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Form\ArticleType;
+use App\Entity\Enum\StateEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +39,9 @@ final class ArticleController extends AbstractController{
                 } catch (FileException $e) {
                 }
                 $article->setPicture($filename);
+
             }
+            $article->setState(StateEnum::PUBLISHED);
             $entityManager->persist($article);
             $entityManager->flush();
 

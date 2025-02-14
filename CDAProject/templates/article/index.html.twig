@@ -25,9 +25,9 @@
                         {% endfor %}
                     </div>
                     <span class="text-gray-500">
-                        {% if article.state %}
+                        {% if article.state.value %}
                             <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full">
-                                {{ article.state }}
+                                {{ article.state.value }}
                             </span>
                         {% endif %}
                     </span>

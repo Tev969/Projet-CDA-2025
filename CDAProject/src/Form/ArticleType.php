@@ -52,11 +52,6 @@ class ArticleType extends AbstractType
             ->add('slug', HiddenType::class, [
                 'required' => true
             ]);
-
-            $builder->get('title')->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
-                $slug = $event->getForm()->get('title')->getData();
-                $event->getForm()->getParent()->get('slug')->setData($slug);
-            });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

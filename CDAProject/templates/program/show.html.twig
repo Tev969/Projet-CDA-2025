@@ -42,10 +42,33 @@
 
                     {# Description #}
                     <div class="prose max-w-none mb-12">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-3">
-                            <i class="fas fa-book-open text-blue-600"></i>
-                            À propos du programme
-                        </h2>
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-semibold text-gray-800 flex items-center gap-3">
+                                <i class="fas fa-book-open text-blue-600"></i>
+                                À propos du programme
+                            </h2>
+                            {% if app.user %} 
+                                {% if program.users.contains(app.user) %}
+                                    <span class="text-green-600 px-4 py-2 bg-green-50 rounded-xl">Programme déjà enregistré</span>
+                                {% else %}
+                                    <form action="{{ path('app_program_save', {'id': program.id}) }}" method="POST" class="m-0">
+                                        <button class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-2 rounded-xl font-semibold transition duration-300 transform hover:scale-105 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                                            <span class="flex items-center justify-center gap-2">
+                                                <i class="fas fa-user-plus"></i>
+                                                Sauvegarder
+                                            </span>
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="flex flex-col sm:flex-row justify-between items-center gap-6 pt-6 border-t border-gray-100">
+                            <a href="{{ path('app_programs') }}" 
+                               class="group flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors duration-300">
+                                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform duration-300"></i>
+                                <span>Retour aux programmes</span>
+                            </a>
+                        </div>
 
                         {# Description en sections #}
                         <div class="grid gap-8">
@@ -172,23 +195,7 @@
                         </div>
                     </div>
 
-                    {# Actions #}
-                    <div class="flex flex-col sm:flex-row justify-between items-center gap-6 pt-6 border-t border-gray-100">
-                        <a href="{{ path('app_programs') }}" 
-                           class="group flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors duration-300">
-                            <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform duration-300"></i>
-                            <span>Retour aux programmes</span>
-                        </a>
-                        
-                        {% if app.user %}
-                            <button class="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 rounded-xl font-semibold transition duration-300 transform hover:scale-105 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                                <span class="flex items-center justify-center gap-2">
-                                    <i class="fas fa-user-plus"></i>
-                                    S'inscrire au programme
-                                </span>
-                            </button>
-                        {% endif %}
-                    </div>
+                    {# Action
                 </div>
             </div>
         </div>
