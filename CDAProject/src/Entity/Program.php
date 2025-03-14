@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Enum\StateEnum;
 use App\Repository\ProgramRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -59,6 +60,9 @@ class Program implements \Stringable
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
+
+    #[ORM\Column(enumType: StateEnum::class)]
+    private ?StateEnum $state = StateEnum::DRAFT;
 
     public function __construct()
     {
@@ -258,6 +262,18 @@ class Program implements \Stringable
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getState(): ?StateEnum
+    {
+        return $this->state;
+    }
+
+    public function setState(StateEnum $state): static
+    {
+        $this->state = $state;
 
         return $this;
     }

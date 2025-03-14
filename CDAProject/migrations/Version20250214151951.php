@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250214104424 extends AbstractMigration
+final class Version20250214151951 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -29,7 +29,7 @@ final class Version20250214104424 extends AbstractMigration
         $this->addSql('CREATE TABLE category (id SERIAL NOT NULL, title VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE exercice (id SERIAL NOT NULL, program_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, description TEXT NOT NULL, duration DOUBLE PRECISION NOT NULL, session VARCHAR(255) NOT NULL, week VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_E418C74D3EB8070A ON exercice (program_id)');
-        $this->addSql('CREATE TABLE program (id SERIAL NOT NULL, user_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, description TEXT NOT NULL, image VARCHAR(255) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, difficulty VARCHAR(50) DEFAULT NULL, duration DOUBLE PRECISION DEFAULT NULL, price DOUBLE PRECISION DEFAULT NULL, is_custom BOOLEAN DEFAULT NULL, steps JSON DEFAULT NULL, slug VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE program (id SERIAL NOT NULL, user_id INT DEFAULT NULL, title VARCHAR(255) NOT NULL, description TEXT NOT NULL, image VARCHAR(255) DEFAULT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, difficulty VARCHAR(50) DEFAULT NULL, duration DOUBLE PRECISION DEFAULT NULL, price DOUBLE PRECISION DEFAULT NULL, is_custom BOOLEAN DEFAULT NULL, slug VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_92ED7784A76ED395 ON program (user_id)');
         $this->addSql('COMMENT ON COLUMN program.created_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE "user" (id SERIAL NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, lastname VARCHAR(100) NOT NULL, firstname VARCHAR(100) NOT NULL, size DOUBLE PRECISION DEFAULT NULL, age DOUBLE PRECISION DEFAULT NULL, sexe VARCHAR(255) DEFAULT NULL, weight DOUBLE PRECISION DEFAULT NULL, level VARCHAR(20) DEFAULT NULL, week_activity DOUBLE PRECISION DEFAULT NULL, PRIMARY KEY(id))');

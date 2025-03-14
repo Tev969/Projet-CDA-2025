@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -43,27 +44,44 @@ class ProgramController extends AbstractController
     }
 
     #[Route('/program/create', name: 'app_program_create')]
-    public function create(Request $request, EntityManagerInterface $entityManager, #[Autowire('%photo_dir%')] string $photoDir): Response
-    {
+    public function create(
+        Request $request, 
+        EntityManagerInterface $entityManager, 
+        #[Autowire('%photo_dir%')] string $photoDir,
+        SluggerInterface $slugger
+    ): Response {
         $program = new Program();
         $form = $this->createForm(ProgramType::class, $program);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $program->setUser($this->getUser());
-            if ($photo = $form['photo']->getData()) {
-                $filename = bin2hex(random_bytes(6)).'.'.$photo->guessExtension();
-                try {
-                    $photo->move($photoDir, $filename);
-                } catch (FileException $e) {
+            try {
+                // Configuration du programme
+                $program->setUser($this->getUser());
+                $program->setIsCustom(true);
+                $program->setSlug($slugger->slug($program->getTitle())->lower());
+                
+                // Gestion de l'image
+                if ($photo = $form['photo']->getData()) {
+                    $filename = bin2hex(random_bytes(6)).'.'.$photo->guessExtension();
+                    try {
+                        $photo->move($photoDir, $filename);
+                        $program->setImage($filename);
+                    } catch (FileException $e) {
+                        $this->addFlash('error', 'Une erreur est survenue lors de l\'upload de l\'image');
+                        return $this->redirectToRoute('app_program_create');
+                    }
                 }
-                $program->setImage($filename);
 
+                $entityManager->persist($program);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Programme créé avec succès !');
+                return $this->redirectToRoute('app_program_show', ['id' => $program->getId()]);
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Une erreur est survenue lors de la création du programme');
+                return $this->redirectToRoute('app_program_create');
             }
-            $entityManager->persist($program);
-            
-            $entityManager->flush();
-            return $this->redirectToRoute('app_program_show', ['id' => $program->getId()]);
         }
 
         return $this->render('program/create.html.twig', [
@@ -80,6 +98,4 @@ class ProgramController extends AbstractController
             'weeks' => WeekEnum::cases(),
         ]);
     }
-
-   
 } 

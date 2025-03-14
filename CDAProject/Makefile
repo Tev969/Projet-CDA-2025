@@ -6,5 +6,6 @@ reset-db:
 	symfony console doctrine:migrations:migrate -n
 	symfony console doctrine:fixtures:load -n
 
-
+build:
+	docker compose build
 

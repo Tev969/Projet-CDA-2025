@@ -56,6 +56,8 @@
                             {% if app.user %} 
                                 {% if program.users.contains(app.user) %}
                                     <span class="text-green-600 px-4 py-2 bg-green-50 rounded-xl">Programme déjà enregistré</span>
+                                {% elseif is_granted('ROLE_COACH') %}
+                                    <span class="text-blue-600 px-4 py-2 bg-blue-50 rounded-xl">Statut : {{ program.state.value }}</span>
                                 {% else %}
                                     <form action="{{ path('app_program_save', {'id': program.id}) }}" method="POST" class="m-0">
                                         <button class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-2 rounded-xl font-semibold transition duration-300 transform hover:scale-105 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">

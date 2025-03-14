@@ -32,6 +32,13 @@ class UsersFixtures extends Fixture
         $user->setFirstname('User');
         $user->setLastname('User');
 
+        $user = new User();
+        $user->setEmail('coach@example.com');
+        $user->setPassword($password);
+        $user->setRoles(['ROLE_COACH']);
+        $user->setFirstname('Coach');
+        $user->setLastname('Coach');
+
         $manager->persist($user);
         $manager->flush();
     }

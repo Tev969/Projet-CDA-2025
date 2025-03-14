@@ -8,10 +8,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
@@ -53,6 +53,15 @@ class ProgramType extends AbstractType
                     'class' => 'w-full px-4 py-2 rounded-lg border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-200'
                 ]
             ])
+            ->add('price', NumberType::class, [
+                'label' => 'Prix',
+                'attr' => [
+                    'class' => 'w-full px-4 py-2 rounded-lg border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-200',
+                    'min' => 0,
+                    'step' => '0.01',
+                    'placeholder' => 'Entrez le prix du programme'
+                ]
+            ])
             ->add('photo', FileType::class, [
                 'label' => 'Image du programme',
                 'mapped' => false,
@@ -70,17 +79,6 @@ class ProgramType extends AbstractType
                 ],
                 'attr' => [
                     'class' => 'w-full px-4 py-2 rounded-lg border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-200'
-                ]
-            ])
-            ->add('exercices', CollectionType::class, [
-                'entry_type' => ExerciceType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'label' => 'Exercices',
-                'prototype' => true,
-                'attr' => [
-                    'class' => 'exercices-collection'
                 ]
             ])
         ;

@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Program;
+use App\Entity\Enum\StateEnum;
 use App\Repository\CategoryRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -109,6 +110,7 @@ class ProgramsFixtures extends Fixture
                    ->setPrice($programData['price'])
                    ->setImage($programData['image'])
                    ->setIsCustom(false)
+                   ->setState(StateEnum::PUBLISHED)
                    ->setSlug($this->slugger->slug($programData['title']));
 
             $category = $this->categoryRepository->find(1);

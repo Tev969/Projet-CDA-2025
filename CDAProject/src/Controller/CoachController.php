@@ -12,14 +12,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class CoachController extends AbstractController{
     #[Route('/coach', name: 'app_coach')]
-    public function index( #[Autowire('%env(STRIPE_API_KEY)%')] string $stripeApiKey): Response
+    public function index( #[Autowire('%env(STRIPE_API_KEY)%')] string $stripeApiKey , Request $request ) : Response
     {
         $stripe = new \Stripe\StripeClient($stripeApiKey);
-        
+        $host = $request -> getSchemeAndHttpHost();
         $session = $stripe->checkout->sessions->create([
           'customer_email' => $this->getUser()->getUserIdentifier(),
-          'success_url' => 'http://localhost:8000/coach/success?session_id={CHECKOUT_SESSION_ID}',
-          'cancel_url' => 'http://localhost:8000/coach/cancel?session_id={CHECKOUT_SESSION_ID}',
+          'success_url' => $host . '/coach/success?session_id={CHECKOUT_SESSION_ID}',
+          'cancel_url' => $host . '/coach/cancel?session_id={CHECKOUT_SESSION_ID}',
           'line_items' => [
             [
               'price' => 'price_1QsPfJCky60V9v1dSR3z9Gna',

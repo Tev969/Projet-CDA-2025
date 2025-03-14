@@ -2,6 +2,29 @@
 
 {% block title %}Créer un programme{% endblock %}
 
+{% block javascripts %}
+{{ parent() }}
+<script>
+function updateImagePreview(input) {
+    const preview = document.getElementById('imagePreview');
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    const uploadPrompt = document.getElementById('uploadPrompt');
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            previewContainer.classList.remove('hidden');
+            uploadPrompt.classList.add('hidden');
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
+{% endblock %}
+
 {% block body %}
 <div class="min-h-screen bg-gray-50 py-12">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,6 +67,13 @@
                         </div>
                     </div>
 
+                    <!-- Prix -->
+                    <div class="space-y-2">
+                        {{ form_label(form.price, null, {'label_attr': {'class': 'text-sm font-medium text-gray-700'}}) }}
+                        {{ form_widget(form.price) }}
+                        {{ form_errors(form.price, {'attr': {'class': 'text-sm text-red-600 mt-1'}}) }}
+                    </div>
+
                     <!-- Image -->
                     <div class="space-y-2">
                         <div class="flex items-center space-x-2">
@@ -68,20 +98,6 @@
                         {{ form_errors(form.photo, {'attr': {'class': 'text-sm text-red-600 mt-1'}}) }}
                     </div>
 
-                    <!-- Exercices -->
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-medium text-gray-900">Exercices</h3>
-                            <button type="button" class="add-exercice-button px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
-                                Ajouter un exercice
-                            </button>
-                        </div>
-                        
-                        <div class="exercices-wrapper">
-                            {{ form_widget(form.exercices) }}
-                        </div>
-                    </div>
-
                     <!-- Boutons -->
                     <div class="flex items-center justify-end space-x-4 pt-6">
                         <a href="{{ path('app_programs') }}" class="px-6 py-2.5 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors duration-300">
@@ -96,54 +112,4 @@
         </div>
     </div>
 </div>
-
-{% block javascripts %}
-<script>
-function updateImagePreview(input) {
-    const preview = document.getElementById('imagePreview');
-    const previewContainer = document.getElementById('imagePreviewContainer');
-    const uploadPrompt = document.getElementById('uploadPrompt');
-
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            previewContainer.classList.remove('hidden');
-            uploadPrompt.classList.add('hidden');
-        }
-        
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    let exerciceIndex = {{ form.exercices|length }};
-    const addButton = document.querySelector('.add-exercice-button');
-    const exercicesWrapper = document.querySelector('.exercices-wrapper');
-    const prototype = exercicesWrapper.dataset.prototype;
-
-    addButton.addEventListener('click', function() {
-        const newForm = prototype.replace(/__name__/g, exerciceIndex);
-        const exerciceDiv = document.createElement('div');
-        exerciceDiv.className = 'exercice-form bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-4';
-        exerciceDiv.innerHTML = newForm;
-
-        // Ajouter un bouton de suppression
-        const deleteButton = document.createElement('button');
-        deleteButton.type = 'button';
-        deleteButton.className = 'mt-4 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors';
-        deleteButton.textContent = 'Supprimer cet exercice';
-        deleteButton.onclick = function() {
-            exerciceDiv.remove();
-        };
-
-        exerciceDiv.appendChild(deleteButton);
-        exercicesWrapper.appendChild(exerciceDiv);
-        exerciceIndex++;
-    });
-});
-</script>
-{% endblock %}
-
 {% endblock %}
