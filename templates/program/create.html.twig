@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un programme{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+function updateImagePreview(input) {
+    const preview = document.getElementById('imagePreview');
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    const uploadPrompt = document.getElementById('uploadPrompt');
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            previewContainer.classList.remove('hidden');
+            uploadPrompt.classList.add('hidden');
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gray-50 py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <!-- En-tête -->
+            <div class="bg-gradient-to-r from-purple-900 via-purple-800 to-purple-600 px-6 py-8">
+                <h1 class="text-3xl font-bold text-white">Créer un programme</h1>
+                <p class="mt-2 text-purple-100">Partagez votre expertise en créant un programme d'entraînement personnalisé</p>
+            </div>
+
+            <!-- Formulaire -->
+            <div class="p-8">
+                {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+                    <!-- Titre -->
+                    <div class="space-y-2">
+                        {{ form_label(form.title, null, {'label_attr': {'class': 'text-sm font-medium text-gray-700'}}) }}
+                        {{ form_widget(form.title) }}
+                        {{ form_errors(form.title, {'attr': {'class': 'text-sm text-red-600 mt-1'}}) }}
+                    </div>
+
+                    <!-- Description -->
+                    <div class="space-y-2">
+                        {{ form_label(form.description, null, {'label_attr': {'class': 'text-sm font-medium text-gray-700'}}) }}
+                        {{ form_widget(form.description) }}
+                        {{ form_errors(form.description, {'attr': {'class': 'text-sm text-red-600 mt-1'}}) }}
+                    </div>
+
+                    <!-- Niveau et Durée -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            {{ form_label(form.difficulty, null, {'label_attr': {'class': 'text-sm font-medium text-gray-700'}}) }}
+                            {{ form_widget(form.difficulty) }}
+                            {{ form_errors(form.difficulty, {'attr': {'class': 'text-sm text-red-600 mt-1'}}) }}
+                        </div>
+
+                        <div class="space-y-2">
+                            {{ form_label(form.duration, null, {'label_attr': {'class': 'text-sm font-medium text-gray-700'}}) }}
+                            {{ form_widget(form.duration) }}
+                            {{ form_errors(form.duration, {'attr': {'class': 'text-sm text-red-600 mt-1'}}) }}
+                        </div>
+                    </div>
+
+                    <!-- Prix -->
+                    <div class="space-y-2">
+                        {{ form_label(form.price, null, {'label_attr': {'class': 'text-sm font-medium text-gray-700'}}) }}
+                        {{ form_widget(form.price) }}
+                        {{ form_errors(form.price, {'attr': {'class': 'text-sm text-red-600 mt-1'}}) }}
+                    </div>
+
+                    <!-- Image -->
+                    <div class="space-y-2">
+                        <div class="flex items-center space-x-2">
+                            {{ form_label(form.photo, null, {'label_attr': {'class': 'text-sm font-medium text-gray-700'}}) }}
+                            <span class="text-xs text-gray-500">(JPEG, PNG ou WEBP, max 2MB)</span>
+                        </div>
+                        <div class="relative">
+                            {{ form_widget(form.photo, {'attr': {'class': 'absolute inset-0 w-full h-full opacity-0 cursor-pointer', 'onchange': 'updateImagePreview(this)'}}) }}
+                            <div class="w-full px-4 py-8 border-2 border-dashed border-gray-300 rounded-lg text-center hover:border-purple-500 transition-colors duration-300">
+                                <div id="imagePreviewContainer" class="hidden space-y-4">
+                                    <img id="imagePreview" src="#" alt="Aperçu" class="mx-auto max-h-48 rounded-lg">
+                                    <p class="text-sm text-gray-600">Cliquez ou glissez pour changer l'image</p>
+                                </div>
+                                <div id="uploadPrompt" class="space-y-2">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                    <p class="text-sm text-gray-600">Cliquez ou glissez une image ici</p>
+                                </div>
+                            </div>
+                        </div>
+                        {{ form_errors(form.photo, {'attr': {'class': 'text-sm text-red-600 mt-1'}}) }}
+                    </div>
+
+                    <!-- Boutons -->
+                    <div class="flex items-center justify-end space-x-4 pt-6">
+                        <a href="{{ path('app_programs') }}" class="px-6 py-2.5 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors duration-300">
+                            Annuler
+                        </a>
+                        <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-purple-600 to-purple-800 text-white rounded-xl hover:from-purple-700 hover:to-purple-900 transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg">
+                            Créer le programme
+                        </button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

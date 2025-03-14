@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Félicitations - Nouveau Coach{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="p-8 sm:p-12">
+                {# Icon de succès avec animation #}
+                <div class="mx-auto flex items-center justify-center h-24 w-24 rounded-full bg-green-100 mb-8">
+                    <svg class="h-16 w-16 text-green-500 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+
+                {# Titre et sous-titre #}
+                <div class="text-center">
+                    <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight mb-4">Félicitations !</h1>
+                    <p class="text-xl text-gray-500 mb-8">Vous êtes maintenant officiellement coach sur notre plateforme.</p>
+                </div>
+
+                {# Liste des privilèges #}
+                <div class="bg-gray-50 rounded-xl p-6 mb-8">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Vos nouveaux privilèges :</h2>
+                    <ul class="space-y-4">
+                        <li class="flex items-center text-gray-700">
+                            <span class="flex-shrink-0 h-6 w-6 text-green-500">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </span>
+                            <span class="ml-3">Création de programmes d'entraînement personnalisés</span>
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="flex-shrink-0 h-6 w-6 text-green-500">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </span>
+                            <span class="ml-3">Gestion de votre profil de coach professionnel</span>
+                        </li>
+                        <li class="flex items-center text-gray-700">
+                            <span class="flex-shrink-0 h-6 w-6 text-green-500">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </span>
+                            <span class="ml-3">Interaction privilégiée avec vos futurs clients</span>
+                        </li>
+                    </ul>
+                </div>
+
+                {# Boutons d'action #}
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{{ path('app_program_create') }}" 
+                       class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-300 shadow-lg hover:shadow-xl">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Créer mon premier programme
+                    </a>
+                    <a href="{{ path('app_programs') }}" 
+                       class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-300 shadow-lg hover:shadow-xl">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                        Voir tous les programmes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

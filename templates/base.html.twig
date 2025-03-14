@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        {% block stylesheets %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </head>
+    <body>
+        {% include 'partials/_header.html.twig' %}
+              {% for message in app.flashes('success') %}
+                <div class="mb-6 bg-emerald-50 border-l-4 border-emerald-400 p-4 rounded-r-lg shadow-sm relative animate-fade-in-down" role="alert">
+                    <p class="text-emerald-700 font-medium">{{ message }}</p>
+                    <button type="button" class="absolute top-0 right-0 mt-4 mr-4 text-emerald-400 hover:text-emerald-600 transition-colors" data-bs-dismiss="alert">
+                        <span class="text-xl">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% block body %}{% endblock %}
+    </body>
+</html>
