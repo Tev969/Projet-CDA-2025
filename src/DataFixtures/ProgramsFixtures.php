@@ -3,12 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Program;
-<<<<<<< HEAD:CDAProject/src/DataFixtures/ProgramsFixtures.php
-use App\Entity\ProgramWeek;
-use App\Entity\Exercice;
-=======
 use App\Entity\Enum\StateEnum;
->>>>>>> program:src/DataFixtures/ProgramsFixtures.php
 use App\Repository\CategoryRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -129,7 +124,7 @@ class ProgramsFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies()   : array
     {
         return [
             ExercicesFixtures::class,
