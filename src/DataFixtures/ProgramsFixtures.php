@@ -8,9 +8,8 @@ use App\Repository\CategoryRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class ProgramsFixtures extends Fixture implements DependentFixtureInterface
+class ProgramsFixtures extends Fixture
 {
     private const PROGRAMS = [
         [
@@ -124,10 +123,4 @@ class ProgramsFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function getDependencies()   : array
-    {
-        return [
-            ExercicesFixtures::class,
-        ];
-    }
 }

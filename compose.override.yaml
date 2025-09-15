@@ -1,5 +1,8 @@
 
 services:
+  app:
+    volumes:
+      - ./:/app/
 ###> doctrine/doctrine-bundle ###
   database:
     ports:

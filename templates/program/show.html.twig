@@ -108,26 +108,6 @@
                                 <div class="bg-orange-100 p-3 rounded-lg">
                                     <i class="fas fa-dumbbell text-orange-600"></i>
                                 </div>
-<<<<<<< HEAD:CDAProject/templates/program/show.html.twig
-                                Programme d'entraînement
-                            </h3>
-                            
-                            <div class="space-y-6">
-                                {% for week in program.programWeeks %}
-                                    <div class="week-card">
-                                        <h3>{{ week.title }}</h3>
-                                        <p>{{ week.description }}</p>
-                                        
-                                        <div class="exercices-list">
-                                            {% for exercice in week.exercices %}
-                                                <div class="exercice-card">
-                                                    <h4>{{ exercice.name }}</h4>
-                                                    <p>Difficulté : {{ exercice.difficulty }}</p>
-                                                    <p>Durée : {{ exercice.durationInMinutes }} minutes</p>
-                                                    <p>Équipement : {{ exercice.equipment }}</p>
-                                                    <div class="instructions">
-                                                        {{ exercice.instructions|nl2br }}
-=======
 
                                 <div class="bg-purple-50 rounded-xl p-6">
                                     <div class="flex items-center gap-3 mb-3">
@@ -167,29 +147,16 @@
                                                 <div class="flex items-center gap-4">
                                                     <div class="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center">
                                                         <span class="text-blue-600 font-bold">S{{ loop.index }}</span>
->>>>>>> program:templates/program/show.html.twig
                                                     </div>
                                                 </div>
                                             {% endfor %}
                                         </div>
                                     </div>
-                                {% endfor %}
                             </div>
                             {% endif %}
                         </div>
                     </div>
 
-<<<<<<< HEAD:CDAProject/templates/program/show.html.twig
-                    {# Actions #}
-                    <div class="flex flex-col sm:flex-row justify-between items-center gap-6 pt-8 border-t border-gray-100 mt-8">
-                        {% include 'program/_back_button.html.twig' %}
-                        {% if app.user %}
-                            {% include 'program/_enroll_button.html.twig' %}
-                        {% endif %}
-                    </div>
-=======
-                    {# Action
->>>>>>> program:templates/program/show.html.twig
                 </div>
             </div>
         </div>
@@ -218,8 +185,7 @@
 
         window.toggleSession = (button) => {
             const content = button.nextElementSibling;
-            const icon = button.querySelector('.fa-chevron-down');
-            
+            const icon = button.querySelector('.fa-chevron-down'); 
             toggleAnimation(content, icon);
             content.classList.toggle('animate-fadeIn');
         };
