@@ -53,12 +53,15 @@
                                 <i class="fas fa-book-open text-blue-600"></i>
                                 À propos du programme
                             </h2>
-                            {% if app.user %} 
-                                {% if program.users.contains(app.user) %}
-                                    <span class="text-green-600 px-4 py-2 bg-green-50 rounded-xl">Programme déjà enregistré</span>
-                                {% elseif is_granted('ROLE_COACH') %}
-                                    <span class="text-blue-600 px-4 py-2 bg-blue-50 rounded-xl">Statut : {{ program.state.value }}</span>
-                                {% else %}
+                           {% if app.user and app.user == program.user %}
+                                <form method="post" action="{{ path('app_program_delete', {'id': program.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce programme ?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ program.id) }}">
+                                    <button type="submit" class="text-red-600 hover:text-red-800">
+                                        <i class="fas fa-trash"></i> Supprimer le programme
+                                    </button>
+                                </form>
+                            {% endif %}
+                            </h2>
                                     <form action="{{ path('app_program_save', {'id': program.id}) }}" method="POST" class="m-0">
                                         <button class="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-2 rounded-xl font-semibold transition duration-300 transform hover:scale-105 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
                                             <span class="flex items-center justify-center gap-2">
@@ -67,8 +70,7 @@
                                             </span>
                                         </button>
                                     </form>
-                                {% endif %}
-                            {% endif %}
+                        
                         </div>
                         <div class="flex flex-col sm:flex-row justify-between items-center gap-6 pt-6 border-t border-gray-100">
                             <a href="{{ path('app_programs') }}" 

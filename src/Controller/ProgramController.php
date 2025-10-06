@@ -98,4 +98,23 @@ class ProgramController extends AbstractController
             'weeks' => WeekEnum::cases(),
         ]);
     }
+    #[Route('/program/delete/{id}', name: 'app_program_delete', methods: ['POST'])]
+    public function delete(Request $request, Program $program, EntityManagerInterface $entityManager): Response
+    {
+    
+        if ($this->getUser() !== $program->getUser()) {
+            throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à supprimer ce programme.');
+        }
+
+        if ($this->isCsrfTokenValid('delete'.$program->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($program);
+            $entityManager->flush();
+            
+            $this->addFlash('success', 'Le programme a été supprimé avec succès.');
+        } else {
+            $this->addFlash('error', 'Token CSRF invalide.');
+        }
+
+        return $this->redirectToRoute('app_profil');
+    }
 } 
